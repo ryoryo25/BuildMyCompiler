@@ -28,4 +28,9 @@ public class Addition extends BinaryOperation {
             throws VariableNotFoundException, TypeUnmatchedException {
         return compileBase(OpCode.ADD, env, next);
     }
+
+    @Override
+    public String toString() {
+        return "(" + mExpr1 + " + " + mExpr2 + ")";
+    }
 }

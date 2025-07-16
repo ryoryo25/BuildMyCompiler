@@ -36,4 +36,9 @@ public class LocalBind extends Expression {
         // TODO 自動生成されたメソッド・スタブ
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "LET " + mVar + " = " + mDef + " IN " + mBody;
+    }
 }

@@ -12,4 +12,6 @@ public abstract class Expression {
 
     public abstract CompiledCode compile(CompileEnvironment env, CompiledCode next)
             throws VariableNotFoundException, TypeUnmatchedException;
+    
+    public abstract String toString();
 }

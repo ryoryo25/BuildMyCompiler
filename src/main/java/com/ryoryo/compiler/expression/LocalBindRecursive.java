@@ -38,4 +38,9 @@ public class LocalBindRecursive extends Expression {
         // TODO 自動生成されたメソッド・スタブ
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "LETREC " + mVar + " = " + mDef + " IN " + mBody;
+    }
 }

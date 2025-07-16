@@ -46,4 +46,9 @@ public class FunctionApplication extends Expression {
 
         return insn(OpCode.FRAME, next, argCompiled);
     }
+
+    @Override
+    public String toString() {
+        return mOperator + " (" + mOperand + ")";
+    }
 }

@@ -25,4 +25,9 @@ public class Variable extends Expression {
     public CompiledCode compile(CompileEnvironment env, CompiledCode next) throws VariableNotFoundException {
         return CompiledCode.insn(OpCode.REFER, next, env.lookup(mVar));
     }
+
+    @Override
+    public String toString() {
+        return "Var(" + mVar + ")";
+    }
 }

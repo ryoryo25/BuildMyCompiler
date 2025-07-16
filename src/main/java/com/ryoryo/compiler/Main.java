@@ -4,10 +4,8 @@ import com.ryoryo.compiler.environment.CompileEnvironment;
 import com.ryoryo.compiler.environment.Environment;
 import com.ryoryo.compiler.exception.TypeUnmatchedException;
 import com.ryoryo.compiler.exception.VariableNotFoundException;
-import com.ryoryo.compiler.expression.Constant;
 import com.ryoryo.compiler.expression.Expression;
-import com.ryoryo.compiler.expression.binop.LessThanEqual;
-import com.ryoryo.compiler.value.VNumber;
+import com.ryoryo.compiler.parser.Parser;
 import com.ryoryo.compiler.vm.CompiledCode;
 import com.ryoryo.compiler.vm.CompiledCode.OpCode;
 import com.ryoryo.compiler.vm.VM;
@@ -22,10 +20,13 @@ public class Main {
         //                .addBind(new TVariable("b"), new VNumber(88));
         //        eval(expr, env);
 
-        var expr = new LessThanEqual(
-                new Constant(new VNumber(2)),
-                new Constant(new VNumber(2)));
-        compileEval(expr);
+        System.out.print("> ");
+        var expr = Parser.parse(System.in);
+        System.out.println(expr);
+//        var expr = new LessThanEqual(
+//                new Constant(new VNumber(2)),
+//                new Constant(new VNumber(2)));
+//        compileEval(expr);
     }
 
     public static void eval(Expression expr, Environment env) {

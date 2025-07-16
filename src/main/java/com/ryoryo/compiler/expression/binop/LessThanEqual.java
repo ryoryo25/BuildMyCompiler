@@ -28,4 +28,9 @@ public class LessThanEqual extends BinaryOperation {
             throws VariableNotFoundException, TypeUnmatchedException {
         return compileBase(OpCode.LESS_THAN_EQUAL, env, next);
     }
+
+    @Override
+    public String toString() {
+        return "(" + mExpr1 + " <= " + mExpr2 + ")";
+    }
 }

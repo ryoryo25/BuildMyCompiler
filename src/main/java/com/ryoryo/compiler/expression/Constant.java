@@ -23,4 +23,9 @@ public class Constant extends Expression {
     public CompiledCode compile(CompileEnvironment env, CompiledCode next) {
         return CompiledCode.insn(OpCode.CONSTANT, next, mVal);
     }
+
+    @Override
+    public String toString() {
+        return "Const(" + mVal + ")";
+    }
 }

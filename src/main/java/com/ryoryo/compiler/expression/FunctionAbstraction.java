@@ -37,4 +37,9 @@ public class FunctionAbstraction extends Expression {
 
         return CompiledCode.insn(OpCode.FUNCTIONAL, next, bodyCompiled);
     }
+
+    @Override
+    public String toString() {
+        return "λ " + mArg + " . " + mBody;
+    }
 }

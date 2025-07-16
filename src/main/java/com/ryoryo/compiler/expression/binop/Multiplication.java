@@ -28,4 +28,9 @@ public class Multiplication extends BinaryOperation {
             throws VariableNotFoundException, TypeUnmatchedException {
         return compileBase(OpCode.MULT, env, next);
     }
+
+    @Override
+    public String toString() {
+        return "(" + mExpr1 + " * " + mExpr2 + ")";
+    }
 }

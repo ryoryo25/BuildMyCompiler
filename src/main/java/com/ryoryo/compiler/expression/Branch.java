@@ -42,4 +42,9 @@ public class Branch extends Expression {
                 env,
                 CompiledCode.insn(OpCode.TEST, null, thenCompiled, elseCompiled));
     }
+
+    @Override
+    public String toString() {
+        return "IF " + mCond + " THEN " + mThen + " ELSE " + mElse;
+    }
 }

@@ -28,4 +28,9 @@ public class NotEqual extends BinaryOperation {
             throws VariableNotFoundException, TypeUnmatchedException {
         return compileBase(OpCode.NOT_EQUAL, env, next);
     }
+
+    @Override
+    public String toString() {
+        return "(" + mExpr1 + " != " + mExpr2 + ")";
+    }
 }
