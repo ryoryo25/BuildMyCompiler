@@ -133,6 +133,10 @@ public class VM {
                     acc = new VNumber(((Value) indexRef(sp, 0)).asNumber() / acc.asNumber());
                     exp = exp.getNext();
                     break;
+                case MOD:
+                    acc = new VNumber(((Value) indexRef(sp, 0)).asNumber() % acc.asNumber());
+                    exp = exp.getNext();
+                    break;
                 case EQUAL:
                     acc = new VBoolean(((Value) indexRef(sp, 0)).asNumber() == acc.asNumber());
                     exp = exp.getNext();
