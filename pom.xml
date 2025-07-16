@@ -15,11 +15,6 @@
     </plugins>
   </build>
   <dependencies>
-    <dependency>
-      <groupId>org.antlr</groupId>
-      <artifactId>antlr4</artifactId>
-      <version>4.13.2</version>
-  	</dependency>
   	<dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>

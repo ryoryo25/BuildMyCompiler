@@ -1,0 +1,170 @@
+/**
+ * JJTree template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
+ */
+options
+{
+  STATIC = false;
+  MULTI = true;
+  VISITOR = true;
+  UNICODE_INPUT = false;
+}
+
+PARSER_BEGIN(Parser)
+package com.ryoryo.compiler.parser;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.ryoryo.compiler.expression.Expression;
+
+public class Parser
+{
+  public static Expression parse(InputStream stream) {
+    Parser parser = new Parser(stream);
+    ParserVisitor visitor = new ASTConverter();
+    try
+    {
+      return (Expression) parser.Root().jjtAccept(visitor, null);
+    }
+    catch (Exception e)
+    {
+      System.out.println("Oops.");
+      System.out.println(e.getMessage());
+      return null;
+    }
+  }
+}
+
+PARSER_END(Parser)
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| < "//" (~[ "\n", "\r" ])*
+    (
+      "\n"
+    | "\r"
+    | "\r\n"
+    ) >
+| < "/*" (~[ "*" ])* "*"
+    (
+      ~[ "/" ] (~[ "*" ])* "*"
+    )*
+    "/" >
+}
+
+TOKEN : /* LITERALS */
+{
+  < INTEGER_LITERAL :
+    < DECIMAL_LITERAL > ([ "l", "L" ])?
+  | < HEX_LITERAL > ([ "l", "L" ])?
+  | < OCTAL_LITERAL > ([ "l", "L" ])? 
+    >
+| < #DECIMAL_LITERAL : [ "1"-"9" ] ([ "0"-"9" ])* >
+| < #HEX_LITERAL : "0" [ "x", "X" ] ([ "0"-"9", "a"-"f", "A"-"F" ])+ >
+| < #OCTAL_LITERAL : "0" ([ "0"-"7" ])* >
+}
+
+TOKEN : /* IDENTIFIERS */
+{
+  < IDENTIFIER :
+    < LETTER >
+    (
+      < LETTER >
+    | < DIGIT >
+    )* >
+| < #LETTER : [ "_", "a"-"z", "A"-"Z" ] >
+| < #DIGIT : [ "0"-"9" ] >
+}
+
+TOKEN:
+{
+  < ADD_OP :
+    "+"
+  | "-" >
+| < MUL_OP :
+    "*"
+  | "/"
+  | "%" >
+}
+
+SimpleNode Root() :
+{}
+{
+  Expression() ";"
+  {
+    return jjtThis;
+  }
+}
+
+void Expression() :
+{}
+{
+  AdditiveExpression()
+}
+
+void AdditiveExpression() :
+{
+  List<Token> tokens = new ArrayList<Token>();
+  Token t = null;
+}
+{
+  MultiplicativeExpression()
+  (
+    t = < ADD_OP >
+    MultiplicativeExpression() { tokens.add(t); }
+  )*
+  {
+    jjtThis.jjtSetValue(tokens);
+  }
+}
+
+void MultiplicativeExpression() :
+{
+  List<Token> tokens = new ArrayList<Token>();
+  Token t = null;
+}
+{
+  UnaryExpression()
+  (
+    t = < MUL_OP >
+    UnaryExpression() { tokens.add(t); }
+  )*
+  {
+    jjtThis.jjtSetValue(tokens);
+  }
+}
+
+void UnaryExpression() :
+{}
+{
+  "(" Expression() ")"
+| Identifier()
+| Integer()
+}
+
+void Identifier() :
+{
+  Token t = null;
+}
+{
+  t = < IDENTIFIER >
+  {
+    jjtThis.jjtSetValue(t);
+  }
+}
+
+void Integer() :
+{
+  Token t = null;
+}
+{
+  t = < INTEGER_LITERAL >
+  {
+    jjtThis.jjtSetValue(t);
+  }
+}
