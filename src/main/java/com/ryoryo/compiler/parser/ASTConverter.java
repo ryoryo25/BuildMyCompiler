@@ -7,6 +7,7 @@ import com.ryoryo.compiler.expression.Expression;
 import com.ryoryo.compiler.expression.Variable;
 import com.ryoryo.compiler.expression.binop.Addition;
 import com.ryoryo.compiler.expression.binop.Division;
+import com.ryoryo.compiler.expression.binop.Modulo;
 import com.ryoryo.compiler.expression.binop.Multiplication;
 import com.ryoryo.compiler.expression.binop.Subtraction;
 import com.ryoryo.compiler.type.TVariable;
@@ -79,8 +80,8 @@ public class ASTConverter implements ParserVisitor {
                     expr1 = new Division(expr1, expr2);
                     break;
                 case "%":
-                    throw new RuntimeException("Not implemented yet");
-//                    break;
+                    expr1 = new Modulo(expr1, expr2);
+                    break;
                 default:
                     throw new IllegalArgumentException("Unexpected value: " + op.toString());
             }
