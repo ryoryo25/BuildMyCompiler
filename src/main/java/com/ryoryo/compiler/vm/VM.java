@@ -69,7 +69,6 @@ public class VM {
             printDebug(acc, exp, sp);
 
             switch (exp.getOpCode()) {
-                default:
                 case HALT:
                     return acc;
                 case REFER:
@@ -153,6 +152,22 @@ public class VM {
                     acc = new VBoolean(((Value) indexRef(sp, 0)).asNumber() <= acc.asNumber());
                     exp = exp.getNext();
                     break;
+                case LANDS: // Logical AND short-circuit
+                    if (!acc.asBoolean()) {
+                        exp = (CompiledCode) exp.getArgs()[0]; // Skip to the next expression if false
+                    } else {
+                        exp = exp.getNext();
+                    }
+                    break;
+                case LORS: // Logical OR short-circuit
+                    if (acc.asBoolean()) {
+                        exp = (CompiledCode) exp.getArgs()[0]; // Skip to the next expression if true
+                    } else {
+                        exp = exp.getNext();
+                    }
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unknown OpCode: " + exp.getOpCode());
             }
         }
     }

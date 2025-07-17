@@ -19,3 +19,13 @@
 /Token.java
 /TokenMgrError.java
 /Parser.java
+/ASTAndExpression.java
+/ASTArithmeticExpression.java
+/ASTBoolean.java
+/ASTBooleanExpression.java
+/ASTCompareExpression.java
+/ASTLogicalExpression.java
+/ASTLogicalUnaryExpression.java
+/ASTOrExpression.java
+/ASTProgram.java
+/ASTComparisonExpression.java

@@ -4,6 +4,9 @@ import com.ryoryo.compiler.exception.TypeUnmatchedException;
 
 public class VBoolean extends Value {
 
+    public static final VBoolean TRUE = new VBoolean(true);
+    public static final VBoolean FALSE = new VBoolean(false);
+    
     private boolean mBool;
 
     public VBoolean(boolean bool) {

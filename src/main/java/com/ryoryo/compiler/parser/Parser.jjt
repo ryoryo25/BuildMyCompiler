@@ -67,6 +67,9 @@ TOKEN : /* LITERALS */
 | < #DECIMAL_LITERAL : [ "1"-"9" ] ([ "0"-"9" ])* >
 | < #HEX_LITERAL : "0" [ "x", "X" ] ([ "0"-"9", "a"-"f", "A"-"F" ])+ >
 | < #OCTAL_LITERAL : "0" ([ "0"-"7" ])* >
+| < BOOLEAN_LITERAL :
+    "true"
+  | "false" >
 }
 
 TOKEN : /* IDENTIFIERS */
@@ -90,18 +93,106 @@ TOKEN:
     "*"
   | "/"
   | "%" >
+| < AND_OP : "&&" >
+| < OR_OP : "||" >
+| < COMP_OP :
+    "=="
+  | "!="
+  | "<"
+  | "<="
+  | ">"
+  | ">=" >
 }
 
 SimpleNode Root() :
 {}
 {
-  Expression() ";"
+  Program() ";"
   {
     return jjtThis;
   }
 }
 
-void Expression() :
+void Program() :
+{}
+{
+  LogicalExpression()
+//| ArithmeticExpression()
+}
+
+void LogicalExpression() :
+{}
+{
+  OrExpression()
+}
+
+void OrExpression() :
+{
+  List<Token> tokens = new ArrayList<Token>();
+  Token t = null;
+}
+{
+  AndExpression()
+  (
+    t = < OR_OP >
+    AndExpression() { tokens.add(t); }
+  )*
+  {
+    jjtThis.jjtSetValue(tokens);
+  }
+}
+
+void AndExpression() :
+{
+  List<Token> tokens = new ArrayList<Token>();
+  Token t = null;
+}
+{
+  LogicalUnaryExpression()
+  (
+    t = < AND_OP >
+    LogicalUnaryExpression() { tokens.add(t); }
+  )*
+  {
+    jjtThis.jjtSetValue(tokens);
+  }
+}
+
+void LogicalUnaryExpression() :
+{}
+{
+  "(" LogicalExpression() ")"
+| "!" LogicalExpression()
+| ComparisonExpression()
+| Boolean()
+}
+
+
+void ComparisonExpression() :
+{
+  Token t = null;
+}
+{
+  ArithmeticExpression()
+  t = < COMP_OP >
+  ArithmeticExpression()
+  {
+    jjtThis.jjtSetValue(t);
+  }
+}
+
+void Boolean() :
+{
+  Token t = null;
+}
+{
+  t = < BOOLEAN_LITERAL >
+  {
+    jjtThis.jjtSetValue(t);
+  }
+}
+
+void ArithmeticExpression() :
 {}
 {
   AdditiveExpression()
@@ -142,7 +233,7 @@ void MultiplicativeExpression() :
 void UnaryExpression() :
 {}
 {
-  "(" Expression() ")"
+  "(" ArithmeticExpression() ")"
 | Identifier()
 | Integer()
 }
