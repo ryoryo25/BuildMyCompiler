@@ -32,7 +32,7 @@ public class CompiledCode implements StackContent, CompiledCodeArg {
     }
 
     public static enum OpCode {
-        HALT, REFER, CONSTANT, FUNCTIONAL, TEST, FRAME, ARGUMENT, APPLY, POP, RETURN, ADD, SUB, MULT, DIV, MOD, EQUAL, NOT_EQUAL, LESS_THAN, LESS_THAN_EQUAL, LANDS, LORS
+        HALT, REFER, CONSTANT, FUNCTIONAL, TEST, FRAME, ARGUMENT, APPLY, POP, RETURN, ADD, SUB, MULT, DIV, MOD, EQUAL, NOT_EQUAL, LESS_THAN, LESS_THAN_EQUAL, LANDS, LORS, LNOT
     }
 
     private String argJoin() {

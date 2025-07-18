@@ -166,6 +166,10 @@ public class VM {
                         exp = exp.getNext();
                     }
                     break;
+                case LNOT: // Logical NOT
+                    acc = new VBoolean(!acc.asBoolean());
+                    exp = exp.getNext();
+                    break;
                 default:
                     throw new IllegalArgumentException("Unknown OpCode: " + exp.getOpCode());
             }

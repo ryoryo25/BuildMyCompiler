@@ -95,6 +95,7 @@ TOKEN:
   | "%" >
 | < AND_OP : "&&" >
 | < OR_OP : "||" >
+| < NOT_OP : "!" >
 | < COMP_OP :
     "=="
   | "!="
@@ -117,7 +118,6 @@ void Program() :
 {}
 {
   LogicalExpression()
-//| ArithmeticExpression()
 }
 
 void LogicalExpression() :
@@ -148,13 +148,25 @@ void AndExpression() :
   Token t = null;
 }
 {
-  LogicalUnaryExpression()
+  NotExpression()
   (
     t = < AND_OP >
-    LogicalUnaryExpression() { tokens.add(t); }
+    NotExpression() { tokens.add(t); }
   )*
   {
     jjtThis.jjtSetValue(tokens);
+  }
+}
+
+void NotExpression() :
+{
+  Token t = null;
+}
+{
+  t = < NOT_OP >
+  LogicalUnaryExpression()
+  {
+    jjtThis.jjtSetValue(t);
   }
 }
 
@@ -162,7 +174,6 @@ void LogicalUnaryExpression() :
 {}
 {
   "(" LogicalExpression() ")"
-| "!" LogicalExpression()
 | ComparisonExpression()
 | Boolean()
 }
@@ -174,19 +185,10 @@ void ComparisonExpression() :
 }
 {
   ArithmeticExpression()
-  t = < COMP_OP >
-  ArithmeticExpression()
-  {
-    jjtThis.jjtSetValue(t);
-  }
-}
-
-void Boolean() :
-{
-  Token t = null;
-}
-{
-  t = < BOOLEAN_LITERAL >
+  (
+    t = < COMP_OP >
+    ArithmeticExpression()
+  )?
   {
     jjtThis.jjtSetValue(t);
   }
@@ -220,17 +222,17 @@ void MultiplicativeExpression() :
   Token t = null;
 }
 {
-  UnaryExpression()
+  ArithmeticUnaryExpression()
   (
     t = < MUL_OP >
-    UnaryExpression() { tokens.add(t); }
+    ArithmeticUnaryExpression() { tokens.add(t); }
   )*
   {
     jjtThis.jjtSetValue(tokens);
   }
 }
 
-void UnaryExpression() :
+void ArithmeticUnaryExpression() :
 {}
 {
   "(" ArithmeticExpression() ")"
@@ -255,6 +257,17 @@ void Integer() :
 }
 {
   t = < INTEGER_LITERAL >
+  {
+    jjtThis.jjtSetValue(t);
+  }
+}
+
+void Boolean() :
+{
+  Token t = null;
+}
+{
+  t = < BOOLEAN_LITERAL >
   {
     jjtThis.jjtSetValue(t);
   }

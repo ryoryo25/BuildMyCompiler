@@ -29,3 +29,5 @@
 /ASTOrExpression.java
 /ASTProgram.java
 /ASTComparisonExpression.java
+/ASTArithmeticUnaryExpression.java
+/ASTNotExpression.java

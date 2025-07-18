@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ryoryo.compiler.expression.Constant;
 import com.ryoryo.compiler.expression.Expression;
+import com.ryoryo.compiler.expression.LogicalNot;
 import com.ryoryo.compiler.expression.Variable;
 import com.ryoryo.compiler.expression.binop.Addition;
 import com.ryoryo.compiler.expression.binop.Division;
@@ -45,11 +46,10 @@ public class ASTConverter implements ParserVisitor {
     @Override
     public Object visit(ASTOrExpression node, Object data) {
         return visitBase(node, data, (op, e1, e2) -> {
-            switch (op) {
-                case "||":
-                    return new LogicalOr(e1, e2);
-                default:
-                    throw new IllegalArgumentException("Unexpected value: " + op);
+            if (op.equals("||")) {
+                return new LogicalOr(e1, e2);
+            } else {
+                throw new IllegalArgumentException("Unexpected value: " + op);
             }
         });
     }
@@ -57,13 +57,23 @@ public class ASTConverter implements ParserVisitor {
     @Override
     public Object visit(ASTAndExpression node, Object data) {
         return visitBase(node, data, (op, e1, e2) -> {
-            switch (op) {
-                case "&&":
-                    return new LogicalAnd(e1, e2);
-                default:
-                    throw new IllegalArgumentException("Unexpected value: " + op);
+            if (op.equals("&&")) {
+                return new LogicalAnd(e1, e2);
+            } else {
+                throw new IllegalArgumentException("Unexpected value: " + op);
             }
         });
+    }
+    
+    @Override
+    public Object visit(ASTNotExpression node, Object data) {
+        String op = ((Token) node.jjtGetValue()).toString();
+        if (op.equals("!")) {
+            var e = (Expression) node.jjtGetChild(0).jjtAccept(this, null);
+            return new LogicalNot(e);
+        } else {
+            throw new IllegalArgumentException("Unexpected value: " + op);
+        }
     }
     
     @Override
@@ -75,6 +85,9 @@ public class ASTConverter implements ParserVisitor {
     public Object visit(ASTComparisonExpression node, Object data) {
         Token opToken = (Token) node.jjtGetValue();
         Expression e1 = (Expression) node.jjtGetChild(0).jjtAccept(this, null);
+        if (node.jjtGetNumChildren() < 2) {
+            return e1; // No comparison, just return the first expression
+        }
         Expression e2 = (Expression) node.jjtGetChild(1).jjtAccept(this, null);
         switch (opToken.toString()) {
             case "==":
@@ -136,7 +149,7 @@ public class ASTConverter implements ParserVisitor {
     }
 
     @Override
-    public Object visit(ASTUnaryExpression node, Object data) {
+    public Object visit(ASTArithmeticUnaryExpression node, Object data) {
         return node.jjtGetChild(0).jjtAccept(this, null);
     }
 
