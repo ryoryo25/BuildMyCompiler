@@ -163,7 +163,8 @@ void NotExpression() :
   Token t = null;
 }
 {
-  t = < NOT_OP >
+  (    t = < NOT_OP >
+  )?
   LogicalUnaryExpression()
   {
     jjtThis.jjtSetValue(t);

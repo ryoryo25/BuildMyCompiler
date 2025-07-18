@@ -46,7 +46,7 @@ public class ASTConverter implements ParserVisitor {
     @Override
     public Object visit(ASTOrExpression node, Object data) {
         return visitBase(node, data, (op, e1, e2) -> {
-            if (op.equals("||")) {
+            if ("||".equals(op)) {
                 return new LogicalOr(e1, e2);
             } else {
                 throw new IllegalArgumentException("Unexpected value: " + op);
@@ -57,7 +57,7 @@ public class ASTConverter implements ParserVisitor {
     @Override
     public Object visit(ASTAndExpression node, Object data) {
         return visitBase(node, data, (op, e1, e2) -> {
-            if (op.equals("&&")) {
+            if ("&&".equals(op)) {
                 return new LogicalAnd(e1, e2);
             } else {
                 throw new IllegalArgumentException("Unexpected value: " + op);
@@ -67,12 +67,15 @@ public class ASTConverter implements ParserVisitor {
     
     @Override
     public Object visit(ASTNotExpression node, Object data) {
-        String op = ((Token) node.jjtGetValue()).toString();
-        if (op.equals("!")) {
-            var e = (Expression) node.jjtGetChild(0).jjtAccept(this, null);
+        Token opToken = (Token) node.jjtGetValue();
+        var e = (Expression) node.jjtGetChild(0).jjtAccept(this, null);
+        
+        if (opToken == null) {
+            return e; // No operator, just return the expression
+        } else if ("!".equals(opToken.toString())) {
             return new LogicalNot(e);
         } else {
-            throw new IllegalArgumentException("Unexpected value: " + op);
+            throw new IllegalArgumentException("Unexpected value: " + opToken.toString());
         }
     }
     
