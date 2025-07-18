@@ -137,19 +137,19 @@ public class VM {
                     exp = exp.getNext();
                     break;
                 case EQUAL:
-                    acc = new VBoolean(((Value) indexRef(sp, 0)).asNumber() == acc.asNumber());
+                    acc = VBoolean.fromBoolean(((Value) indexRef(sp, 0)).asNumber() == acc.asNumber());
                     exp = exp.getNext();
                     break;
                 case NOT_EQUAL:
-                    acc = new VBoolean(((Value) indexRef(sp, 0)).asNumber() != acc.asNumber());
+                    acc = VBoolean.fromBoolean(((Value) indexRef(sp, 0)).asNumber() != acc.asNumber());
                     exp = exp.getNext();
                     break;
                 case LESS_THAN:
-                    acc = new VBoolean(((Value) indexRef(sp, 0)).asNumber() < acc.asNumber());
+                    acc = VBoolean.fromBoolean(((Value) indexRef(sp, 0)).asNumber() < acc.asNumber());
                     exp = exp.getNext();
                     break;
                 case LESS_THAN_EQUAL:
-                    acc = new VBoolean(((Value) indexRef(sp, 0)).asNumber() <= acc.asNumber());
+                    acc = VBoolean.fromBoolean(((Value) indexRef(sp, 0)).asNumber() <= acc.asNumber());
                     exp = exp.getNext();
                     break;
                 case LANDS: // Logical AND short-circuit
@@ -167,7 +167,7 @@ public class VM {
                     }
                     break;
                 case LNOT: // Logical NOT
-                    acc = new VBoolean(!acc.asBoolean());
+                    acc = VBoolean.fromBoolean(!acc.asBoolean());
                     exp = exp.getNext();
                     break;
                 default:

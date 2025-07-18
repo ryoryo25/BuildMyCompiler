@@ -21,7 +21,7 @@ public class LogicalOr extends BinaryOperation {
     @Override
     public Value eval(Environment env) throws VariableNotFoundException, TypeUnmatchedException {
         // for short-circuit evaluation
-        return new VBoolean(mExpr1.eval(env).asBoolean() || mExpr2.eval(env).asBoolean());
+        return VBoolean.fromBoolean(mExpr1.eval(env).asBoolean() || mExpr2.eval(env).asBoolean());
     }
 
     @Override

@@ -113,7 +113,7 @@ public class ASTConverter implements ParserVisitor {
     @Override
     public Object visit(ASTBoolean node, Object data) {
         Token valueToken = (Token) node.jjtGetValue();
-        return new Constant(new VBoolean(Boolean.parseBoolean(valueToken.toString())));
+        return new Constant(VBoolean.fromString(valueToken.toString()));
     }
 
     @Override

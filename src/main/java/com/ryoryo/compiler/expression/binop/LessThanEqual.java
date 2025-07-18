@@ -20,7 +20,7 @@ public class LessThanEqual extends BinaryOperation {
     public Value eval(Environment env) throws VariableNotFoundException, TypeUnmatchedException {
         var v1 = mExpr1.eval(env).asNumber();
         var v2 = mExpr2.eval(env).asNumber();
-        return new VBoolean(v1 <= v2);
+        return VBoolean.fromBoolean(v1 <= v2);
     }
 
     @Override

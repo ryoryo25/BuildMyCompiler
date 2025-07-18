@@ -21,7 +21,7 @@ public class LogicalNot extends Expression {
 
     @Override
     public Value eval(Environment env) throws VariableNotFoundException, TypeUnmatchedException {
-        return new VBoolean(!mExpr.eval(env).asBoolean());
+        return VBoolean.fromBoolean(!mExpr.eval(env).asBoolean());
     }
 
     @Override

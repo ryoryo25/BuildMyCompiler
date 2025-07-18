@@ -9,7 +9,7 @@ public class VBoolean extends Value {
     
     private boolean mBool;
 
-    public VBoolean(boolean bool) {
+    private VBoolean(boolean bool) {
         mBool = bool;
     }
 
@@ -31,5 +31,13 @@ public class VBoolean extends Value {
     @Override
     public String display() {
         return toString();
+    }
+    
+    public static VBoolean fromBoolean(boolean bool) {
+        return bool ? TRUE : FALSE;
+    }
+    
+    public static VBoolean fromString(String str) {
+        return fromBoolean(Boolean.parseBoolean(str));
     }
 }
