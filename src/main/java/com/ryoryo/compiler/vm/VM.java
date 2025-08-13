@@ -69,7 +69,7 @@ public class VM {
         Address sp = Address.ZERO; // stack pointer
 
         while (true) {
-            if (Main.DEBUG) {
+            if (Main.isDebug) {
                 printDebug(acc, exp, sp, frm);
             }
 
