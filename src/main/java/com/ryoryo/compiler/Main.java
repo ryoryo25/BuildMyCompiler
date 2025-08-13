@@ -27,7 +27,7 @@ public class Main {
             }
             
             if (Stream.of(args).anyMatch(arg -> arg.equals("-v") || arg.equals("--version"))) {
-                System.out.println("My Tiny Interpreter/Compiler v1.0");
+                System.out.println("My Tiny Interpreter/Compiler v1.0.0");
                 return;
             }
             
