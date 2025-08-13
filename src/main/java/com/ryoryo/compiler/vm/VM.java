@@ -1,5 +1,6 @@
 package com.ryoryo.compiler.vm;
 
+import com.ryoryo.compiler.Main;
 import com.ryoryo.compiler.exception.TypeUnmatchedException;
 import com.ryoryo.compiler.value.VBoolean;
 import com.ryoryo.compiler.value.VFunctionalCompiled;
@@ -7,7 +8,7 @@ import com.ryoryo.compiler.value.VNumber;
 import com.ryoryo.compiler.value.Value;
 
 public class VM {
-    private static final int STACK_SIZE = 10;
+    private static final int STACK_SIZE = 20;
     private static final StackContent[] STACK = new StackContent[STACK_SIZE];
 
     public VM() {
@@ -68,7 +69,9 @@ public class VM {
         Address sp = Address.ZERO; // stack pointer
 
         while (true) {
-            printDebug(acc, exp, sp, frm);
+            if (Main.DEBUG) {
+                printDebug(acc, exp, sp, frm);
+            }
 
             switch (exp.getOpCode()) {
                 case HALT:
@@ -105,8 +108,8 @@ public class VM {
                     break;
                 case APPLY:
                     var fun = (VFunctionalCompiled) acc;
-                    sp = push(sp, fun.getLink());
                     frm = sp;
+                    sp = push(sp, fun.getLink());
                     exp = fun.getBody();
                     break;
                 case POP:
