@@ -25,7 +25,7 @@ public class Parser
     ParserVisitor visitor = new ASTConverter();
     try
     {
-      return (Expression) parser.Root().jjtAccept(visitor, null);
+      return (Expression) parser.Program().jjtAccept(visitor, null);
     }
     catch (Exception e)
     {
@@ -55,6 +55,15 @@ SKIP :
       ~[ "/" ] (~[ "*" ])* "*"
     )*
     "/" >
+}
+
+TOKEN : /* RESERVED WORDS */
+{
+  < IF : "if" >
+| < THEN : "then" >
+| < ELSE : "else" >
+| < LET : "let" >
+| < IN : "in" >
 }
 
 TOKEN : /* LITERALS */
@@ -95,35 +104,67 @@ TOKEN:
   | "%" >
 | < AND_OP : "&&" >
 | < OR_OP : "||" >
-| < NOT_OP : "!" >
-| < COMP_OP :
+| < EQ_OP :
     "=="
-  | "!="
-  | "<"
+  | "!=" >
+| < REL_OP :
+    "<"
   | "<="
   | ">"
   | ">=" >
+| < PRE_OP :
+    "+"
+  | "-"
+  | "!" >
+
 }
 
-SimpleNode Root() :
+SimpleNode Program() :
 {}
 {
-  Program() ";"
+  Expression() ";"
   {
     return jjtThis;
   }
 }
 
-void Program() :
+void Expression() :
 {}
 {
-  LogicalExpression()
+  LambdaExpression()
+| LetExpression()
+| ConditionalExpression()
 }
 
-void LogicalExpression() :
+void LambdaExpression() :
+{
+
+  Token t = null;
+}
+{
+  "\\" t = < IDENTIFIER > "." Expression()
+  {
+    jjtThis.jjtSetValue(t);
+  }
+}
+
+void LetExpression() :
+{
+  Token t = null;
+}
+{
+  "let" t = < IDENTIFIER > "=" Expression()
+  "in" Expression()
+  {
+    jjtThis.jjtSetValue(t);
+  }
+}
+
+void ConditionalExpression() :
 {}
 {
   OrExpression()
+| "if" OrExpression() "then" Expression() "else" Expression()
 }
 
 void OrExpression() :
@@ -148,57 +189,46 @@ void AndExpression() :
   Token t = null;
 }
 {
-  NotExpression()
+  EqualityExpression()
   (
     t = < AND_OP >
-    NotExpression() { tokens.add(t); }
+    EqualityExpression() { tokens.add(t); }
   )*
   {
     jjtThis.jjtSetValue(tokens);
   }
 }
 
-void NotExpression() :
+void EqualityExpression() :
 {
+  List<Token> tokens = new ArrayList<Token>();
   Token t = null;
 }
 {
-  (    t = < NOT_OP >
-  )?
-  LogicalUnaryExpression()
-  {
-    jjtThis.jjtSetValue(t);
-  }
-}
-
-void LogicalUnaryExpression() :
-{}
-{
-  "(" LogicalExpression() ")"
-| ComparisonExpression()
-| Boolean()
-}
-
-
-void ComparisonExpression() :
-{
-  Token t = null;
-}
-{
-  ArithmeticExpression()
+  RelationalExpression()
   (
-    t = < COMP_OP >
-    ArithmeticExpression()
-  )?
+    t = < EQ_OP >
+    RelationalExpression() { tokens.add(t); }
+  )*
   {
-    jjtThis.jjtSetValue(t);
+    jjtThis.jjtSetValue(tokens);
   }
 }
 
-void ArithmeticExpression() :
-{}
+void RelationalExpression() :
+{
+  List<Token> tokens = new ArrayList<Token>();
+  Token t = null;
+}
 {
   AdditiveExpression()
+  (
+    t = < REL_OP >
+    AdditiveExpression() { tokens.add(t); }
+  )*
+  {
+    jjtThis.jjtSetValue(tokens);
+  }
 }
 
 void AdditiveExpression() :
@@ -223,22 +253,47 @@ void MultiplicativeExpression() :
   Token t = null;
 }
 {
-  ArithmeticUnaryExpression()
+  UnaryExpression()
   (
     t = < MUL_OP >
-    ArithmeticUnaryExpression() { tokens.add(t); }
+    UnaryExpression() { tokens.add(t); }
   )*
   {
     jjtThis.jjtSetValue(tokens);
   }
 }
 
-void ArithmeticUnaryExpression() :
+void UnaryExpression() :
+{
+  Token t = null;
+}
+{
+  (    t = < PRE_OP >
+  )?
+  ApplicationExpression()
+  {
+    jjtThis.jjtSetValue(t);
+  }
+}
+
+void ApplicationExpression() :
 {}
 {
-  "(" ArithmeticExpression() ")"
+  PrimaryExpression()
+  (
+    PrimaryExpression()
+  )*
+}
+
+void PrimaryExpression() :
+{
+  Token t = null;
+}
+{
+  Integer()
+| Boolean()
 | Identifier()
-| Integer()
+| "(" Expression() ")"
 }
 
 void Identifier() :

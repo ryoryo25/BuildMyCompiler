@@ -31,3 +31,13 @@
 /ASTComparisonExpression.java
 /ASTArithmeticUnaryExpression.java
 /ASTNotExpression.java
+/ASTIfExpression.java
+/ASTLambdaExpression.java
+/ASTFunctionExpression.java
+/ASTFunctionApplicationExpression.java
+/ASTConditionalExpression.java
+/ASTEqualityExpression.java
+/ASTRelationalExpression.java
+/ASTPrimaryExpression.java
+/ASTApplicationExpression.java
+/ASTLetExpression.java
