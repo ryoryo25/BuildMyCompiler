@@ -116,6 +116,10 @@ public class VM {
                     frm = (Address) indexRef(sp, 1);
                     sp = sp.sub(2);
                     break;
+                case NEG: // Negate the number
+                    acc = VNumber.fromInt(-acc.asNumber());
+                    exp = exp.getNext();
+                    break;
                 case ADD:
                     acc = new VNumber(((Value) indexRef(sp, 0)).asNumber() + acc.asNumber());
                     exp = exp.getNext();
