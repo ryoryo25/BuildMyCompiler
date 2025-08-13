@@ -35,11 +35,11 @@ public class VFunctionalCompiled extends Value {
     @Override
     public String toString() {
         // TODO
-        return "ClosureCompiled";
+        return "ClosureCompiled<" + mBody.display() + ">";
     }
 
     @Override
     public String display() {
-        return toString();
+        return this.toString();
     }
 }

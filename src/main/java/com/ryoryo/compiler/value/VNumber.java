@@ -50,7 +50,7 @@ public class VNumber extends Value {
 
     @Override
     public String display() {
-        return toString();
+        return this.toString();
     }
     
     public static VNumber fromInt(int i) {

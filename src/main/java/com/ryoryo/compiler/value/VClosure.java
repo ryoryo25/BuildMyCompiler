@@ -47,6 +47,6 @@ public class VClosure extends Value {
 
     @Override
     public String display() {
-        return toString();
+        return this.toString();
     }
 }

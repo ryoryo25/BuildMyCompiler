@@ -30,7 +30,7 @@ public class VBoolean extends Value {
 
     @Override
     public String display() {
-        return toString();
+        return this.toString();
     }
     
     public static VBoolean fromBoolean(boolean bool) {
