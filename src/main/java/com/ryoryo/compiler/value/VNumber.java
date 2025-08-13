@@ -29,7 +29,7 @@ public class VNumber extends Value {
     
     private int mNum;
 
-    public VNumber(int num) {
+    private VNumber(int num) {
         mNum = num;
     }
 
@@ -78,5 +78,9 @@ public class VNumber extends Value {
             case 10: return TEN;
             default: return new VNumber(i);
         }
+    }
+    
+    public static VNumber fromString(String str) {
+        return fromInt(Integer.parseInt(str));
     }
 }

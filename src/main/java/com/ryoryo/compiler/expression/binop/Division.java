@@ -20,7 +20,7 @@ public class Division extends BinaryOperation {
     public Value eval(Environment env) throws VariableNotFoundException, TypeUnmatchedException {
         var v1 = mExpr1.eval(env).asNumber();
         var v2 = mExpr2.eval(env).asNumber();
-        return new VNumber(v1 / v2);
+        return VNumber.fromInt(v1 / v2);
     }
 
     @Override

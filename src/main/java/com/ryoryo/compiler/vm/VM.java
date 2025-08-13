@@ -121,23 +121,23 @@ public class VM {
                     exp = exp.getNext();
                     break;
                 case ADD:
-                    acc = new VNumber(((Value) indexRef(sp, 0)).asNumber() + acc.asNumber());
+                    acc = VNumber.fromInt(((Value) indexRef(sp, 0)).asNumber() + acc.asNumber());
                     exp = exp.getNext();
                     break;
                 case SUB:
-                    acc = new VNumber(((Value) indexRef(sp, 0)).asNumber() - acc.asNumber());
+                    acc = VNumber.fromInt(((Value) indexRef(sp, 0)).asNumber() - acc.asNumber());
                     exp = exp.getNext();
                     break;
                 case MULT:
-                    acc = new VNumber(((Value) indexRef(sp, 0)).asNumber() * acc.asNumber());
+                    acc = VNumber.fromInt(((Value) indexRef(sp, 0)).asNumber() * acc.asNumber());
                     exp = exp.getNext();
                     break;
                 case DIV:
-                    acc = new VNumber(((Value) indexRef(sp, 0)).asNumber() / acc.asNumber());
+                    acc = VNumber.fromInt(((Value) indexRef(sp, 0)).asNumber() / acc.asNumber());
                     exp = exp.getNext();
                     break;
                 case MOD:
-                    acc = new VNumber(((Value) indexRef(sp, 0)).asNumber() % acc.asNumber());
+                    acc = VNumber.fromInt(((Value) indexRef(sp, 0)).asNumber() % acc.asNumber());
                     exp = exp.getNext();
                     break;
                 case EQUAL:
