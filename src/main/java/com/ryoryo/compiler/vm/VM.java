@@ -8,8 +8,7 @@ import com.ryoryo.compiler.value.Value;
 
 public class VM {
     private static final int STACK_SIZE = 10;
-
-    private final StackContent[] mStack = new StackContent[STACK_SIZE];
+    private static final StackContent[] STACK = new StackContent[STACK_SIZE];
 
     public VM() {
     }
@@ -18,7 +17,7 @@ public class VM {
         int spInt = sp.getValue();
         int i = 0;
         for (StackContent obj : objs) {
-            mStack[spInt + i] = obj;
+            STACK[spInt + i] = obj;
             i++;
         }
         return sp.add(i);
@@ -29,11 +28,11 @@ public class VM {
     }
 
     private StackContent indexRef(Address sp, int offset) {
-        return mStack[indexOffset(sp, offset).getValue()];
+        return STACK[indexOffset(sp, offset).getValue()];
     }
 
     private Address findLink(int rib, Address frm) {
-        while (rib != 0) {
+        while (rib > 0) {
             rib--;
             frm = (Address) indexRef(frm, -1);
         }
@@ -41,21 +40,24 @@ public class VM {
         return frm;
     }
 
-    private void printStack(Address sp) {
+    private void printStack(Address sp, Address frm) {
         for (int i = 0; i < STACK_SIZE; i++) {
             System.out.println(
                     String.format(
                             "%s %2d: %s",
-                            sp.getValue() == i ? "->" : "  ",
+                            sp.getValue() == i && frm.getValue() == i ? "sf->"
+                            : sp.getValue() == i ? " s->"
+                            : frm.getValue() == i ? " f->"
+                            : "    ",
                             i,
-                            mStack[i] == null ? "null" : mStack[i].display()));
+                            STACK[i] == null ? "null" : STACK[i].display()));
         }
     }
 
-    private void printDebug(Value acc, CompiledCode exp, Address sp) {
+    private void printDebug(Value acc, CompiledCode exp, Address sp, Address frm) {
         System.out.println("acc = " + (acc == null ? "null" : acc.display()));
         System.out.println("exp = " + exp.display());
-        printStack(sp);
+        printStack(sp, frm);
         System.out.println("---");
     }
 
@@ -66,7 +68,7 @@ public class VM {
         Address sp = Address.ZERO; // stack pointer
 
         while (true) {
-            printDebug(acc, exp, sp);
+            printDebug(acc, exp, sp, frm);
 
             switch (exp.getOpCode()) {
                 case HALT:
@@ -104,6 +106,7 @@ public class VM {
                 case APPLY:
                     var fun = (VFunctionalCompiled) acc;
                     sp = push(sp, fun.getLink());
+                    frm = sp;
                     exp = fun.getBody();
                     break;
                 case POP:
