@@ -45,6 +45,6 @@ public class Branch extends Expression {
 
     @Override
     public String toString() {
-        return "IF " + mCond + " THEN " + mThen + " ELSE " + mElse;
+        return "if " + mCond + " then " + mThen + " else " + mElse;
     }
 }

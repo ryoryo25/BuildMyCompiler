@@ -40,6 +40,6 @@ public class FunctionAbstraction extends Expression {
 
     @Override
     public String toString() {
-        return "λ " + mArg + " . " + mBody;
+        return "(λ " + mArg + " . " + mBody + ")";
     }
 }

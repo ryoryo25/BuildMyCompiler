@@ -49,6 +49,6 @@ public class FunctionApplication extends Expression {
 
     @Override
     public String toString() {
-        return mOperator + " (" + mOperand + ")";
+        return mOperator + " " + mOperand;
     }
 }
