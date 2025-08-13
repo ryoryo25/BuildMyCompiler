@@ -33,12 +33,16 @@ public class LocalBind extends Expression {
     @Override
     public CompiledCode compile(CompileEnvironment env, CompiledCode next)
             throws VariableNotFoundException, TypeUnmatchedException {
-        // TODO 自動生成されたメソッド・スタブ
-        return null;
+        // Compile local bind as function abstraction and application
+        var expr = new FunctionApplication(
+                new FunctionAbstraction(mVar, mBody),
+                mDef
+        );
+        return expr.compile(env, next);
     }
 
     @Override
     public String toString() {
-        return "LET " + mVar + " = " + mDef + " IN " + mBody;
+        return "let " + mVar + " = " + mDef + " in " + mBody;
     }
 }
