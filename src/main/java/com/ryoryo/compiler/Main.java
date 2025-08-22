@@ -32,7 +32,7 @@ public class Main {
             }
             
             if (Stream.of(args).anyMatch(arg -> arg.equals("-h") || arg.equals("--help"))) {
-                System.out.println("Usage: java -jar MyTinyCompiler.jar [-d|--debug]");
+                System.out.println("Usage: java -jar MyTinyCompiler.jar [-d|--debug|-v|--version|-h|--help]");
                 System.out.println("Options:");
                 System.out.println("  -d, --debug   Enable debug mode");
                 System.out.println("  -v, --version Show version information");
